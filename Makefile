@@ -1,6 +1,6 @@
 export GIT_LFS_SKIP_SMUDGE=1
 
-.PHONY: sync-docs sync
+.PHONY: sync-docs sync-hydrology-docs sync
 
 sync:
 	uv lock
@@ -10,3 +10,8 @@ sync-docs:
 	uv lock --upgrade-package taqsim
 	uv sync
 	uv run python -c "from pathlib import Path; import shutil; from taqsim.docs import get_docs_path; dst = Path('taqsim_docs'); shutil.rmtree(dst, ignore_errors=True); shutil.copytree(get_docs_path(), dst); print(f'Synced {sum(1 for _ in dst.rglob(chr(42) + chr(46) + \"md\"))} docs to {dst}/')"
+
+sync-hydrology-docs:
+	uv lock --upgrade-package taqsim-hydrology
+	uv sync
+	uv run python -c "from pathlib import Path; import shutil; from taqsim_hydrology.docs import get_docs_path; dst = Path('hydrology_docs'); shutil.rmtree(dst, ignore_errors=True); shutil.copytree(get_docs_path(), dst); print(f'Synced {sum(1 for _ in dst.rglob(chr(42) + chr(46) + \"md\"))} docs to {dst}/')"
